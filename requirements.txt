@@ -1,10 +1,12 @@
-evidently
-numpy==1.19.5
-pandas
-flask
-sklearn
-matplotlib
-dill
+numpy
+Flask
 gunicorn
-PyYAML
--e .
+sklearn
+pandas
+PyYAML==5.1
+evidently
+dill
+matplotlib
+six
+pathlib
+dill

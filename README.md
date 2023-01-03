@@ -66,3 +66,12 @@ Run Docker image
 ```
 docker run -p 5000:5000 -e PORT=5000 b4090e538175
 ```
+
+To check if a image is running
+```
+docker ps
+```
+
+To stop a docker image
+```
+docker stop <container_id>
