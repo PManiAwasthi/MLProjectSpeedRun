@@ -1,10 +1,10 @@
-numpy
+evidently
+numpy==1.19.5
 pandas
 flask
 sklearn
 matplotlib
 dill
-evidently
 gunicorn
 PyYAML
 -e .
