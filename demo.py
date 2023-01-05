@@ -5,6 +5,7 @@ def main():
     try:
         pipeline = Pipeline(config=Configuration())
         pipeline.run_pipeline()
+        # print(Configuration().get_data_validation_config())
     except Exception as e:
         logging.error(f"{e}")
         print(e)

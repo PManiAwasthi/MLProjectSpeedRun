@@ -2,7 +2,7 @@ from housing.exception import HousingException
 import os, sys
 from housing.util.util import read_yaml_file
 from housing.constant import *
-from housing.entity.config_entity import DataIngestionConfig, TrainingPipelineConfg
+from housing.entity.config_entity import DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig
 from housing.logger import logging
 
 class Configuration:
@@ -59,8 +59,40 @@ class Configuration:
             return data_ingestion_config
         except Exception as e:
             raise HousingException(e, sys) from e
+
+    def get_data_validation_config(self) -> DataValidationConfig:
+        try:
+            artifact_dir = self.training_pipeline_config.artifact_dir
+
+            data_validation_artifact_dir = os.path.join(artifact_dir,
+            DATA_VALIDATION_ARITIFACT_DIR_NAME,
+            self.time_stamp
+            )
+            data_validation_config = self.config_info[DATA_VALIDATION_CONFIG_KEY]
+
+            schema_file_path = os.path.join(
+                ROOT_DIR,
+                data_validation_config[DATA_VALIDATION_SCHEMA_DIR_KEY],
+                data_validation_config[DATA_VALIDATION_SCHEMA_FILE_NAME_KEY]
+            )
+
+            report_file_path = os.path.join(data_validation_artifact_dir,
+            data_validation_config[DATA_VALIDATION_REPORT_FILE_NAME_KEY]
+            )
+            report_page_file_path = os.path.join(data_validation_artifact_dir,
+            data_validation_config[DATA_VALIDATION_REPORT_PAGE_FILE_NAME_KEY])
+
+            data_validation_config = DataValidationConfig(
+                schema_file_path=schema_file_path,
+                report_file_path=report_file_path,
+                report_page_file_path=report_page_file_path
+            )
+            return data_validation_config
+
+        except Exception as e:
+            raise HousingException(e, sys) from e
     
-    def get_training_pipeline_config(self) -> TrainingPipelineConfg:
+    def get_training_pipeline_config(self) -> TrainingPipelineConfig:
         try:
             training_pipeline_config = self.config_info[TRAINING_PIPELINE_CONFIG_KEY]
             artifact_dir = os.path.join(ROOT_DIR, 
@@ -68,7 +100,7 @@ class Configuration:
             training_pipeline_config[TRAINING_PIPELINE_ARTIFACT_DIR_KEY]
             )
 
-            training_pipeline_config = TrainingPipelineConfg(artifact_dir=artifact_dir)
+            training_pipeline_config = TrainingPipelineConfig(artifact_dir=artifact_dir)
             logging.info(f"Training pipeline config: {training_pipeline_config}")
             return training_pipeline_config
         except Exception as e:
